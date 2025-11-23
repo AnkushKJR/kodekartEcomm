@@ -81,8 +81,7 @@ public class MainApplication {
             if (loggedInUser.getEmail().equals("admin@kodekart.com")) {
                 adminMenu(sc);
             } else {
-            	// TODO: user menu next step
-                //userMenu(sc, loggedInUser);   // We build this in next step
+                userMenu(sc, loggedInUser);
             }
 
         } else {
@@ -209,6 +208,67 @@ public class MainApplication {
 	        System.out.println("Quantity: " + p.getQuantity());
 	        System.out.println("Description: " + p.getDescription());
 	        System.out.println("-----------------------------------");
+	    }
+	}
+	
+	private static void userMenu(Scanner sc, User user) {
+
+	    ProductDAO productDAO = new ProductDAO();
+
+	    while (true) {
+	        System.out.println("\n===== USER MENU =====");
+	        System.out.println("1. View All Products");
+	        System.out.println("2. Search Product by Name");
+	        System.out.println("3. Search Product by Category");
+	        System.out.println("4. Logout");
+	        System.out.print("Enter choice: ");
+
+	        int choice = sc.nextInt();
+	        sc.nextLine();
+
+	        switch (choice) {
+	            case 1:
+	                viewAllProducts(productDAO);
+	                break;
+
+	            case 2:
+	                System.out.print("Enter product name: ");
+	                String name = sc.nextLine();
+	                showProducts(productDAO.searchByName(name));
+	                break;
+
+	            case 3:
+	                System.out.print("Enter category: ");
+	                String category = sc.nextLine();
+	                showProducts(productDAO.searchByCategory(category));
+	                break;
+
+	            case 4:
+	                return;
+
+	            default:
+	                System.out.println("Invalid choice!");
+	        }
+	    }
+	}
+	
+	private static void showProducts(List<Product> list) {
+
+	    if (list.isEmpty()) {
+	        System.out.println("No products found.");
+	        return;
+	    }
+
+	    System.out.println("\n===== PRODUCTS =====");
+
+	    for (Product p : list) {
+	        System.out.println("ID: " + p.getId());
+	        System.out.println("Name: " + p.getName());
+	        System.out.println("Category: " + p.getCategory());
+	        System.out.println("Price: ₹" + p.getPrice());
+	        System.out.println("Quantity: " + p.getQuantity());
+	        System.out.println("Description: " + p.getDescription());
+	        System.out.println("----------------------------------");
 	    }
 	}
 	

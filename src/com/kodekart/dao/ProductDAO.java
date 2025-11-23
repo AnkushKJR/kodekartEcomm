@@ -113,5 +113,65 @@ public class ProductDAO {
 
 	    return list;
 	}
+	
+	// Search by product name
+	public List<Product> searchByName(String name) {
+	    List<Product> list = new ArrayList<>();
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+	        String sql = "SELECT * FROM products WHERE name LIKE ?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setString(1, "%" + name + "%");
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Product p = new Product();
+	            p.setId(rs.getInt("id"));
+	            p.setName(rs.getString("name"));
+	            p.setCategory(rs.getString("category"));
+	            p.setPrice(rs.getDouble("price"));
+	            p.setQuantity(rs.getInt("quantity"));
+	            p.setDescription(rs.getString("description"));
+	            list.add(p);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	
+	//Search by category
+	public List<Product> searchByCategory(String category) {
+	    List<Product> list = new ArrayList<>();
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+	        String sql = "SELECT * FROM products WHERE category LIKE ?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setString(1, "%" + category + "%");
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Product p = new Product();
+	            p.setId(rs.getInt("id"));
+	            p.setName(rs.getString("name"));
+	            p.setCategory(rs.getString("category"));
+	            p.setPrice(rs.getDouble("price"));
+	            p.setQuantity(rs.getInt("quantity"));
+	            p.setDescription(rs.getString("description"));
+	            list.add(p);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
 
 }

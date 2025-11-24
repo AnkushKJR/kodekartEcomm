@@ -8,6 +8,8 @@ import com.kodekart.dao.OrderDAO;
 import com.kodekart.dao.ProductDAO;
 import com.kodekart.dao.UserDAO;
 import com.kodekart.model.CartItem;
+import com.kodekart.model.Order;
+import com.kodekart.model.OrderItem;
 import com.kodekart.model.Product;
 import com.kodekart.model.User;
 
@@ -227,7 +229,8 @@ public class MainApplication {
 	        System.out.println("5. View Cart");
 	        System.out.println("6. Remove Cart Item");
 	        System.out.println("7. Place Order");
-	        System.out.println("8. Logout");
+	        System.out.println("8. View Order History");
+	        System.out.println("9. Logout");
 	        System.out.print("Enter choice: ");
 
 	        int choice = sc.nextInt();
@@ -268,8 +271,13 @@ public class MainApplication {
 	            case 7:
 	                placeOrder(user.getId());
 	                break;
-	                
+	            
 	            case 8:
+	            	System.out.println("View Order History");
+	                viewOrderHistory(user.getId());
+	                break;
+	                
+	            case 9:
 	                return;
 
 	            default:
@@ -376,6 +384,39 @@ public class MainApplication {
 	        System.out.println("Order placed successfully! Order ID: " + orderId);
 	    } else {
 	        System.out.println("Order failed! Cart may be empty.");
+	    }
+	}
+	
+	private static void viewOrderHistory(int userId) {
+
+	    OrderDAO orderDAO = new OrderDAO();
+	    ProductDAO productDAO = new ProductDAO();
+
+	    List<Order> orders = orderDAO.getOrdersByUser(userId);
+
+	    if (orders.isEmpty()) {
+	        System.out.println("No past orders found.");
+	        return;
+	    }
+
+	    for (Order o : orders) {
+	        System.out.println("\n==================================");
+	        System.out.println("Order ID: " + o.getId());
+	        System.out.println("Total Amount: ₹" + o.getTotalAmount());
+	        System.out.println("Items:");
+
+	        List<OrderItem> items = orderDAO.getOrderItems(o.getId());
+
+	        for (OrderItem item : items) {
+
+	            Product p = productDAO.getProductById(item.getProductId());
+
+	            System.out.println(" - " + p.getName() 
+	                + " | Qty: " + item.getQuantity()
+	                + " | Price: ₹" + item.getPrice());
+	        }
+
+	        System.out.println("==================================");
 	    }
 	}
 	

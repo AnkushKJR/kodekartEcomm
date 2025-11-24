@@ -3,10 +3,13 @@ package com.kodekart.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Statement;
 
 import com.kodekart.model.CartItem;
+import com.kodekart.model.Order;
+import com.kodekart.model.OrderItem;
 import com.kodekart.model.Product;
 import com.kodekart.util.DBConnection;
 
@@ -78,6 +81,64 @@ public class OrderDAO {
 	    return orderId;
 	}
 	
+	public List<Order> getOrdersByUser(int userId) {
+
+	    List<Order> list = new ArrayList<>();
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+
+	        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setInt(1, userId);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Order o = new Order();
+	            o.setId(rs.getInt("id"));
+	            o.setUserId(rs.getInt("user_id"));
+	            o.setTotalAmount(rs.getDouble("total_amount"));
+
+	            list.add(o);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
 	
+	public List<OrderItem> getOrderItems(int orderId) {
+
+	    List<OrderItem> list = new ArrayList<>();
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+
+	        String sql = "SELECT * FROM order_items WHERE order_id = ?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setInt(1, orderId);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            OrderItem item = new OrderItem();
+	            item.setId(rs.getInt("id"));
+	            item.setOrderId(rs.getInt("order_id"));
+	            item.setProductId(rs.getInt("product_id"));
+	            item.setQuantity(rs.getInt("quantity"));
+	            item.setPrice(rs.getDouble("price"));
+
+	            list.add(item);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
 
 }

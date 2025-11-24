@@ -409,11 +409,18 @@ public class MainApplication {
 
 	        for (OrderItem item : items) {
 
-	            Product p = productDAO.getProductById(item.getProductId());
+	        	Product p = productDAO.getProductById(item.getProductId());
 
-	            System.out.println(" - " + p.getName() 
-	                + " | Qty: " + item.getQuantity()
-	                + " | Price: ₹" + item.getPrice());
+	        	if (p != null) {
+	        	    System.out.println(" - " + p.getName()
+	        	        + " | Qty: " + item.getQuantity()
+	        	        + " | Price: ₹" + item.getPrice());
+	        	} else {
+	        	    // product deleted from admin
+	        	    System.out.println(" - [DELETED PRODUCT]"
+	        	        + " | Qty: " + item.getQuantity()
+	        	        + " | Price: ₹" + item.getPrice());
+	        	}
 	        }
 
 	        System.out.println("==================================");

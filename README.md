@@ -1,87 +1,97 @@
 📦 KodeKart – Console-based E-Commerce Application (Java + JDBC + MySQL)
 
-KodeKart is a menu-driven e-commerce application built using Core Java, JDBC, MySQL, and following clean modular architecture (DAO + Model + UI layers).
+KodeKart is a menu-driven e-commerce application built using Core Java, JDBC, and MySQL, following a clean modular architecture (DAO + Model + UI layers).
 
 🚀 Features
+
 👤 User Module
 
-Register & Login
+    Register & Login
 
-Browse all products
+    Browse all products
 
-Search by name & category
+    Search by name & category
 
-Add to cart
+    Add items to cart
 
-View cart with total amount
+    View cart with total amount
 
-Remove items
+    Remove items from cart
 
-Place order
+    Place order
 
-View order history
+    View order history
 
 🛠 Admin Module
 
-Add product
+    Add product
 
-Update product
+    Update product
 
-Delete product
+    Delete product
 
-View all products
+    View all products
 
 🔗 Tech Stack
 
-Java (Core Java, OOPS)
+    Java (Core Java, OOPS)
 
-MySQL (Database)
+    MySQL (Relational Database)
 
-JDBC (Connectivity)
+    JDBC (Connectivity & SQL operations)
 
-DAO pattern
+    DAO Pattern
 
-Menu-driven console UI
+    Menu-driven Console UI
 
 📁 Project Structure
-src/
- ├── model/
- ├── dao/
- ├── main/
- └── util/
+    src/
+    ├── model/      # All POJO classes (User, Product, CartItem, Order, OrderItem)
+    ├── dao/        # All DAO classes (UserDAO, ProductDAO, CartDAO, OrderDAO)
+    ├── main/       # MainApplication with menu-driven UI
+    └── util/       # Utility classes (DBConnection)
 
 🧠 Key Concepts Implemented
 
-JDBC (PreparedStatement, ResultSet, DriverManager)
+    JDBC (PreparedStatement, ResultSet, DriverManager)
 
-DAO Pattern
+    DAO Pattern for clean separation of logic
 
-Transaction management
+    Transaction Management for order placement
 
-Auto-increment primary keys
+    Auto-increment primary keys
 
-SQL JOIN logic via multi-table lookups
+    Multi-table SQL operations (orders + order_items)
 
-Clean separation of concerns
+    Clean modular design with separate layers
 
-Console UI design
+    Console UI with clear menus for users & admin
 
 📝 How to Run
 
-Import project into Eclipse/IntelliJ
+    Import the project into Eclipse or IntelliJ.
 
-Add MySQL Connector JAR
+    Add the MySQL Connector JAR (mysql-connector-j-<version>.jar) to the project’s classpath.
 
-Update DB credentials in DBConnection.java
+    Update database credentials inside DBConnection.java.
 
-Run MainApplication
+    Create MySQL database and tables (users, products, cart, orders, order_items).
+
+    Run MainApplication.java.
+
+    Register as user OR login as admin:
+
+    email: admin@kodekart.com
+    password: admin123
 
 📚 Future Enhancements
 
-Role-based admin login
+    Role-based admin authentication
 
-Product ratings
+    Password encryption (BCrypt)
 
-Wishlists
+    Product ratings & reviews
 
-User authentication hashing
+    Wishlist / favorites feature
+
+    Logging & exception handling improvements

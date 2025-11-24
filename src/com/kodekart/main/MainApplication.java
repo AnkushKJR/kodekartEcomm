@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.kodekart.dao.CartDAO;
+import com.kodekart.dao.OrderDAO;
 import com.kodekart.dao.ProductDAO;
 import com.kodekart.dao.UserDAO;
 import com.kodekart.model.CartItem;
@@ -225,7 +226,8 @@ public class MainApplication {
 	        System.out.println("4. Add to Cart");
 	        System.out.println("5. View Cart");
 	        System.out.println("6. Remove Cart Item");
-	        System.out.println("7. Logout");
+	        System.out.println("7. Place Order");
+	        System.out.println("8. Logout");
 	        System.out.print("Enter choice: ");
 
 	        int choice = sc.nextInt();
@@ -262,8 +264,12 @@ public class MainApplication {
 	            	System.out.println("Remove Cart Item");
 	                removeCartItem(sc);
 	                break;
-
+	            
 	            case 7:
+	                placeOrder(user.getId());
+	                break;
+	                
+	            case 8:
 	                return;
 
 	            default:
@@ -359,6 +365,17 @@ public class MainApplication {
 	        System.out.println("Item removed from cart.");
 	    } else {
 	        System.out.println("Failed to remove. Check Cart ID.");
+	    }
+	}
+	
+	private static void placeOrder(int userId) {
+	    OrderDAO orderDAO = new OrderDAO();
+	    int orderId = orderDAO.placeOrder(userId);
+
+	    if (orderId > 0) {
+	        System.out.println("Order placed successfully! Order ID: " + orderId);
+	    } else {
+	        System.out.println("Order failed! Cart may be empty.");
 	    }
 	}
 	

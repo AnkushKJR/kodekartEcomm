@@ -3,8 +3,10 @@ package com.kodekart.main;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kodekart.dao.CartDAO;
 import com.kodekart.dao.ProductDAO;
 import com.kodekart.dao.UserDAO;
+import com.kodekart.model.CartItem;
 import com.kodekart.model.Product;
 import com.kodekart.model.User;
 
@@ -220,7 +222,10 @@ public class MainApplication {
 	        System.out.println("1. View All Products");
 	        System.out.println("2. Search Product by Name");
 	        System.out.println("3. Search Product by Category");
-	        System.out.println("4. Logout");
+	        System.out.println("4. Add to Cart");
+	        System.out.println("5. View Cart");
+	        System.out.println("6. Remove Cart Item");
+	        System.out.println("7. Logout");
 	        System.out.print("Enter choice: ");
 
 	        int choice = sc.nextInt();
@@ -244,6 +249,21 @@ public class MainApplication {
 	                break;
 
 	            case 4:
+	            	System.out.println("Add to Cart");
+	                addToCart(sc, user.getId());
+	                break;
+
+	            case 5:
+	            	System.out.println("View Cart");
+	                viewCart(user.getId());
+	                break;
+
+	            case 6:
+	            	System.out.println("Remove Cart Item");
+	                removeCartItem(sc);
+	                break;
+
+	            case 7:
 	                return;
 
 	            default:
@@ -269,6 +289,76 @@ public class MainApplication {
 	        System.out.println("Quantity: " + p.getQuantity());
 	        System.out.println("Description: " + p.getDescription());
 	        System.out.println("----------------------------------");
+	    }
+	}
+	
+	//Add to Cart
+	private static void addToCart(Scanner sc, int userId) {
+
+	    CartDAO cartDAO = new CartDAO();
+
+	    System.out.print("Enter Product ID to add: ");
+	    int productId = sc.nextInt();
+
+	    System.out.print("Enter quantity: ");
+	    int quantity = sc.nextInt();
+	    sc.nextLine();
+
+	    boolean result = cartDAO.addToCart(userId, productId, quantity);
+
+	    if (result) {
+	        System.out.println("Product added to cart!");
+	    } else {
+	        System.out.println("Failed to add. Check Product ID.");
+	    }
+	}
+	
+	//View Cart (with product details)
+	private static void viewCart(int userId) {
+
+	    CartDAO cartDAO = new CartDAO();
+	    ProductDAO productDAO = new ProductDAO();
+
+	    List<CartItem> list = cartDAO.getCartItems(userId);
+
+	    if (list.isEmpty()) {
+	        System.out.println("Your cart is empty.");
+	        return;
+	    }
+
+	    System.out.println("\n===== YOUR CART =====");
+
+	    double total = 0;
+
+	    for (CartItem c : list) {
+
+	        Product p = productDAO.getProductById(c.getProductId());  // we will create getProductById()
+
+	        System.out.println("Cart ID: " + c.getId());
+	        System.out.println("Product: " + p.getName());
+	        System.out.println("Price: ₹" + p.getPrice());
+	        System.out.println("Quantity: " + c.getQuantity());
+	        System.out.println("----------------------------------");
+
+	        total += p.getPrice() * c.getQuantity();
+	    }
+
+	    System.out.println("TOTAL AMOUNT: ₹" + total);
+	}
+	
+	private static void removeCartItem(Scanner sc) {
+
+	    CartDAO cartDAO = new CartDAO();
+
+	    System.out.print("Enter Cart ID to remove: ");
+	    int cartId = sc.nextInt();
+
+	    boolean result = cartDAO.removeCartItem(cartId);
+
+	    if (result) {
+	        System.out.println("Item removed from cart.");
+	    } else {
+	        System.out.println("Failed to remove. Check Cart ID.");
 	    }
 	}
 	

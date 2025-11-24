@@ -173,5 +173,33 @@ public class ProductDAO {
 
 	    return list;
 	}
+	
+	public Product getProductById(int id) {
+	    Product p = null;
+
+	    try {
+	        Connection con = DBConnection.getConnection();
+	        String sql = "SELECT * FROM products WHERE id = ?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setInt(1, id);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            p = new Product();
+	            p.setId(rs.getInt("id"));
+	            p.setName(rs.getString("name"));
+	            p.setCategory(rs.getString("category"));
+	            p.setPrice(rs.getDouble("price"));
+	            p.setQuantity(rs.getInt("quantity"));
+	            p.setDescription(rs.getString("description"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return p;
+	}
 
 }
